@@ -166,38 +166,38 @@ export default async function Home({ params, searchParams }: Props) {
 
         {/* 4 Precise Floral Leaf Corners (100% matched to the.invisimple.id/s01) */}
         {/* Top-Left: natural orientation */}
-        <div className="absolute top-0 left-0 pointer-events-none z-10 select-none">
+        <div className="absolute top-0 left-0 pointer-events-none z-10 select-none animate-floral-tl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none animate-sr-pulse" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none" 
           />
         </div>
 
         {/* Top-Right: flipped horizontally */}
-        <div className="absolute top-0 right-0 pointer-events-none z-10 select-none">
+        <div className="absolute top-0 right-0 pointer-events-none z-10 select-none animate-floral-tr">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1] animate-sr-pulse-delay" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1]" 
           />
         </div>
 
         {/* Bottom-Left: flipped vertically */}
-        <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none">
+        <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none animate-floral-bl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-y-[-1] animate-sr-pulse-alt" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-y-[-1]" 
           />
         </div>
 
         {/* Bottom-Right: flipped horizontally and vertically */}
-        <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none">
+        <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none animate-floral-br">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1] scale-y-[-1] animate-sr-pulse" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1] scale-y-[-1]" 
           />
         </div>
 

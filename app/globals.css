@@ -162,3 +162,88 @@ body {
 .font-sr-sans {
   font-family: "Plus Jakarta Sans", sans-serif !important;
 }
+
+/* Floral Sway / Gentle Leaf Wave Animations */
+@keyframes floralSwayTL {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(5deg) scale(1.03);
+  }
+  50% {
+    transform: rotate(1.5deg) scale(1.01);
+  }
+  75% {
+    transform: rotate(-3.5deg) scale(0.98);
+  }
+}
+
+@keyframes floralSwayTR {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-5deg) scale(1.03);
+  }
+  50% {
+    transform: rotate(-1.5deg) scale(1.01);
+  }
+  75% {
+    transform: rotate(3.5deg) scale(0.98);
+  }
+}
+
+@keyframes floralSwayBL {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-5deg) scale(1.03);
+  }
+  50% {
+    transform: rotate(-1.5deg) scale(1.01);
+  }
+  75% {
+    transform: rotate(3.5deg) scale(0.98);
+  }
+}
+
+@keyframes floralSwayBR {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(5deg) scale(1.03);
+  }
+  50% {
+    transform: rotate(1.5deg) scale(1.01);
+  }
+  75% {
+    transform: rotate(-3.5deg) scale(0.98);
+  }
+}
+
+.animate-floral-tl {
+  transform-origin: top left !important;
+  animation: floralSwayTL 5s ease-in-out infinite !important;
+  will-change: transform;
+}
+
+.animate-floral-tr {
+  transform-origin: top right !important;
+  animation: floralSwayTR 5.5s ease-in-out infinite 0.7s !important;
+  will-change: transform;
+}
+
+.animate-floral-bl {
+  transform-origin: bottom left !important;
+  animation: floralSwayBL 5.2s ease-in-out infinite 1.4s !important;
+  will-change: transform;
+}
+
+.animate-floral-br {
+  transform-origin: bottom right !important;
+  animation: floralSwayBR 5.8s ease-in-out infinite 2.1s !important;
+  will-change: transform;
+}

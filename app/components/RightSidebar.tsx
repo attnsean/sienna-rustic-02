@@ -38,34 +38,42 @@ const InstagramIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) =>
 // Reusable 4-Corner Floral Leaves matching the.invisimple.id/s01 exactly
 const SectionFloralCorners = () => (
   <>
-    {/* Top-Left: natural orientation */}
-    <img 
-      src="/template/assets/asset-01-01.png" 
-      alt="" 
-      aria-hidden="true"
-      className="absolute top-0 left-0 w-20 sm:w-24 md:w-28 pointer-events-none z-10 select-none" 
-    />
-    {/* Top-Right: flipped horizontally */}
-    <img 
-      src="/template/assets/asset-01-01.png" 
-      alt="" 
-      aria-hidden="true"
-      className="absolute top-0 right-0 w-20 sm:w-24 md:w-28 scale-x-[-1] pointer-events-none z-10 select-none" 
-    />
-    {/* Bottom-Left: flipped vertically */}
-    <img 
-      src="/template/assets/asset-01-01.png" 
-      alt="" 
-      aria-hidden="true"
-      className="absolute bottom-0 left-0 w-20 sm:w-24 md:w-28 scale-y-[-1] pointer-events-none z-10 select-none" 
-    />
-    {/* Bottom-Right: flipped horizontally and vertically */}
-    <img 
-      src="/template/assets/asset-01-01.png" 
-      alt="" 
-      aria-hidden="true"
-      className="absolute bottom-0 right-0 w-20 sm:w-24 md:w-28 scale-x-[-1] scale-y-[-1] pointer-events-none z-10 select-none" 
-    />
+    {/* Top-Left: natural orientation with swaying animation */}
+    <div className="absolute top-0 left-0 pointer-events-none z-10 select-none animate-floral-tl">
+      <img 
+        src="/template/assets/asset-01-01.png" 
+        alt="" 
+        aria-hidden="true"
+        className="w-20 sm:w-24 md:w-28 pointer-events-none select-none" 
+      />
+    </div>
+    {/* Top-Right: flipped horizontally with swaying animation */}
+    <div className="absolute top-0 right-0 pointer-events-none z-10 select-none animate-floral-tr">
+      <img 
+        src="/template/assets/asset-01-01.png" 
+        alt="" 
+        aria-hidden="true"
+        className="w-20 sm:w-24 md:w-28 scale-x-[-1] pointer-events-none select-none" 
+      />
+    </div>
+    {/* Bottom-Left: flipped vertically with swaying animation */}
+    <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none animate-floral-bl">
+      <img 
+        src="/template/assets/asset-01-01.png" 
+        alt="" 
+        aria-hidden="true"
+        className="w-20 sm:w-24 md:w-28 scale-y-[-1] pointer-events-none select-none" 
+      />
+    </div>
+    {/* Bottom-Right: flipped horizontally and vertically with swaying animation */}
+    <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none animate-floral-br">
+      <img 
+        src="/template/assets/asset-01-01.png" 
+        alt="" 
+        aria-hidden="true"
+        className="w-20 sm:w-24 md:w-28 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
+      />
+    </div>
   </>
 );
 
@@ -371,17 +379,35 @@ export default function RightSidebar({
           <div className="absolute inset-0 bg-gradient-to-t from-[#F4ECE3] via-[#F4ECE3]/35 to-transparent" />
         </div>
 
-        {/* Bottom Corner Leaves on Cover (Matching the.invisimple.id/s01 cover screenshot) */}
-        <img 
-          src="/template/assets/asset-01-01.png" 
-          alt="Floral" 
-          className="absolute bottom-0 left-0 w-28 sm:w-32 scale-y-[-1] pointer-events-none z-10 select-none" 
-        />
-        <img 
-          src="/template/assets/asset-01-01.png" 
-          alt="Floral" 
-          className="absolute bottom-0 right-0 w-28 sm:w-32 scale-x-[-1] scale-y-[-1] pointer-events-none z-10 select-none" 
-        />
+        {/* Swaying Floral Corners on Cover (Top & Bottom) */}
+        <div className="absolute top-0 left-0 pointer-events-none z-10 select-none animate-floral-tl">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-24 sm:w-28 pointer-events-none select-none" 
+          />
+        </div>
+        <div className="absolute top-0 right-0 pointer-events-none z-10 select-none animate-floral-tr">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-24 sm:w-28 scale-x-[-1] pointer-events-none select-none" 
+          />
+        </div>
+        <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none animate-floral-bl">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-28 sm:w-32 scale-y-[-1] pointer-events-none select-none" 
+          />
+        </div>
+        <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none animate-floral-br">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-28 sm:w-32 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
+          />
+        </div>
 
         {/* Bottom Half Invitation Details & Buka Undangan Button */}
         <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-6 pb-12 pt-2 space-y-3.5">
