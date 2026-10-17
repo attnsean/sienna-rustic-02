@@ -237,6 +237,9 @@ export default function RightSidebar({
   // Open invitation handler with smooth slide-up matching s01 closeCover()
   const handleOpenInvitation = () => {
     setIsOpened(true);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("sr:open"));
+    }
     if (audioRef.current) {
       audioRef.current.play().then(() => {
         setIsPlayingMusic(true);

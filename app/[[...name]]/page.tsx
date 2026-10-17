@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import RightSidebar from "../components/RightSidebar";
+import LeftScrollIndicator from "../components/LeftScrollIndicator";
 import { headers } from "next/headers";
 import { resolveProjectData } from "../../lib/resolveProject";
 import type { Metadata } from "next";
@@ -150,7 +151,7 @@ export default async function Home({ params, searchParams }: Props) {
     }
   };
 
-  const formattedDate = formatDateDisplay(weddingDateRaw);
+  const formattedDate = dbData.project?.wedding_date ? formatDateDisplay(weddingDateRaw) : "Minggu, 28 Desember 2027";
 
   return (
     <main className="min-h-[100dvh] md:h-[100dvh] w-full flex flex-col md:flex-row bg-[#F4ECE3] text-[#3C2A21] md:overflow-hidden relative font-sans">
@@ -201,10 +202,7 @@ export default async function Home({ params, searchParams }: Props) {
         </div>
 
         {/* Vertical Scroll Indicator on Right Border (Matches s01: scroll then arrow down) */}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5 text-[11px] font-sans tracking-[0.25em] text-[#5C4E43]/70 select-none pointer-events-none z-20">
-          <span className="[writing-mode:vertical-rl] rotate-180 uppercase text-[10px] font-mono">scroll</span>
-          <span className="text-sm animate-bounce">↓</span>
-        </div>
+        <LeftScrollIndicator />
 
         {/* Center Typography (Clean layout matching s01) */}
         <div className="relative z-20 text-center select-none px-6 space-y-3">
