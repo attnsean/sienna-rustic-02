@@ -61,7 +61,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
   const title = `The Wedding of ${brideName} & ${groomName} | Undangan Pernikahan`;
   const description = `Kepada Yth. ${guestName}, kami mengundang Anda untuk hadir di acara pernikahan ${brideFull} & ${groomFull}.`;
-  const imageUrl = dbData.project?.cover_photo_url || dbData.project?.opening_photo_url || "/template/assets/featured-special-01-.jpg";
+  const imageUrl = dbData.project?.cover_photo_url || dbData.project?.opening_photo_url || "https://sienna-rustic-02.serastory.com/template/assets/Savethedate-2.jpg";
 
   return {
     title,
@@ -157,61 +157,53 @@ export default async function Home({ params, searchParams }: Props) {
       
       {/* Left side Desktop 2-Column Cover (Hidden on mobile, Fixed on Desktop) */}
       <aside className="hidden md:flex relative md:w-[60%] lg:w-[65%] xl:w-[68%] md:h-[100dvh] shrink-0 items-center justify-center overflow-hidden bg-[#F4ECE3] border-r border-[#5C4E43]/20 select-none">
-        {/* Layer 1: Watercolor texture background */}
+        {/* Layer 1: Watercolor texture background (Seamless, No repeat) */}
         <div 
-          className="absolute inset-0 pointer-events-none z-0 select-none bg-cover bg-center opacity-90"
-          style={{ backgroundImage: `url('/template/assets/eks-01-bg-01.jpg')` }}
+          className="absolute inset-0 pointer-events-none z-0 select-none bg-cover bg-center bg-no-repeat opacity-90"
+          style={{ backgroundImage: "url('/template/assets/eks-01-bg-01.jpg')" }}
         />
 
-        {/* 4 Animated Floral Leaf Corners (matching the.invisimple.id/s01) */}
-        {/* Top-Left */}
-        <div className="absolute top-0 left-0 pointer-events-none z-10">
-          <div className="animate-sr-pulse origin-top-left">
-            <img 
-              src="/template/assets/asset-01-01.png" 
-              alt="Floral" 
-              className="w-36 md:w-44 lg:w-56 xl:w-64 h-auto object-contain select-none -rotate-90" 
-            />
-          </div>
+        {/* 4 Precise Floral Leaf Corners (100% matched to the.invisimple.id/s01) */}
+        {/* Top-Left: natural orientation */}
+        <div className="absolute top-0 left-0 pointer-events-none z-10 select-none">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none animate-sr-pulse" 
+          />
         </div>
 
-        {/* Top-Right */}
-        <div className="absolute top-0 right-0 pointer-events-none z-10">
-          <div className="animate-sr-pulse-delay origin-top-right">
-            <img 
-              src="/template/assets/asset-01-01.png" 
-              alt="Floral" 
-              className="w-36 md:w-44 lg:w-56 xl:w-64 h-auto object-contain select-none" 
-            />
-          </div>
+        {/* Top-Right: flipped horizontally */}
+        <div className="absolute top-0 right-0 pointer-events-none z-10 select-none">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1] animate-sr-pulse-delay" 
+          />
         </div>
 
-        {/* Bottom-Left */}
-        <div className="absolute bottom-0 left-0 pointer-events-none z-10">
-          <div className="animate-sr-pulse-alt origin-bottom-left">
-            <img 
-              src="/template/assets/asset-01-01.png" 
-              alt="Floral" 
-              className="w-36 md:w-44 lg:w-56 xl:w-64 h-auto object-contain select-none rotate-180" 
-            />
-          </div>
+        {/* Bottom-Left: flipped vertically */}
+        <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-y-[-1] animate-sr-pulse-alt" 
+          />
         </div>
 
-        {/* Bottom-Right */}
-        <div className="absolute bottom-0 right-0 pointer-events-none z-10">
-          <div className="animate-sr-pulse origin-bottom-right">
-            <img 
-              src="/template/assets/asset-01-01.png" 
-              alt="Floral" 
-              className="w-36 md:w-44 lg:w-56 xl:w-64 h-auto object-contain select-none" 
-            />
-          </div>
+        {/* Bottom-Right: flipped horizontally and vertically */}
+        <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none">
+          <img 
+            src="/template/assets/asset-01-01.png" 
+            alt="Floral" 
+            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1] scale-y-[-1] animate-sr-pulse" 
+          />
         </div>
 
-        {/* Vertical Scroll Indicator on Right Border */}
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-[10px] font-mono text-[#5C4E43]/60 tracking-[0.3em] flex items-center gap-2 select-none pointer-events-none z-20">
-          <span className="w-3 h-[1px] bg-[#5C4E43]/40 inline-block"></span>
-          <span>scroll</span>
+        {/* Vertical Scroll Indicator on Right Border (Matches s01: scroll then arrow down) */}
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5 text-[11px] font-sans tracking-[0.25em] text-[#5C4E43]/70 select-none pointer-events-none z-20">
+          <span className="[writing-mode:vertical-rl] rotate-180 uppercase text-[10px] font-mono">scroll</span>
+          <span className="text-sm animate-bounce">↓</span>
         </div>
 
         {/* Center Typography (Clean layout matching s01) */}
