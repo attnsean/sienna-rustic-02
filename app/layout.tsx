@@ -57,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const brideNick = data?.bride_nickname || "Bride";
   const groomNick = data?.groom_nickname || "Groom";
   const coverUrl = data?.cover_photo_url || data?.opening_photo_url || '/opengraph-image.jpg';
-  const siteUrl = data?.custom_domain || data?.site_url || process.env.NEXT_PUBLIC_SITE_URL || 'https://serastory.com';
+  const siteUrl = data?.custom_domain || data?.site_url || process.env.NEXT_PUBLIC_SITE_URL || 'https://sienna-rustic-02.serastory.com';
 
   const title = `${brideName.toUpperCase()} & ${groomName.toUpperCase()} Wedding Invitation`;
   const description = `The wedding celebration of ${brideName} & ${groomName}`;
