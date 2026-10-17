@@ -735,7 +735,8 @@ export default function RightSidebar({
         </section>
 
         {/* 6. LOVE STORY SECTION */}
-        <section className="px-4 space-y-6 sr-fade-up">
+        <section className="relative px-4 py-8 space-y-6 sr-fade-up overflow-hidden">
+          <SectionFloralCorners />
           <div className="text-center space-y-1">
             <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
               Love Story
@@ -797,7 +798,8 @@ export default function RightSidebar({
         </section>
 
         {/* 7. OUR MOMENTS (GALLERY & VIDEO) SECTION */}
-        <section id="galeri" className="px-4 space-y-6 sr-fade-up">
+        <section id="galeri" className="relative px-4 py-8 space-y-6 sr-fade-up overflow-hidden">
+          <SectionFloralCorners />
           <div className="text-center space-y-1">
             <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
               Our Moments
@@ -1109,7 +1111,8 @@ export default function RightSidebar({
         </section>
 
         {/* 10. CLOSING & FOOTER SECTION */}
-        <section className="px-6 py-8 text-center space-y-6 sr-fade-up">
+        <section className="relative px-6 py-10 text-center space-y-6 sr-fade-up overflow-hidden">
+          <SectionFloralCorners />
           <div className="w-36 h-36 rounded-full overflow-hidden mx-auto p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-zoom-in">
             <img src="/template/assets/IMG_7981.jpg" alt="Couple" className="w-full h-full object-cover rounded-full" />
           </div>
