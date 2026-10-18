@@ -214,31 +214,72 @@ export default function RightSidebar({
     }
   }, [initialWishes]);
 
-  // Attach IntersectionObserver for scroll entrance animations
+  // Attach IntersectionObserver + Scroll Listener for widget entrance animations (matching luxury-01)
   useEffect(() => {
+    if (!isOpened) return;
+
     const container = containerRef.current;
     if (!container) return;
+
+    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+
+    const checkAndAnimate = () => {
+      const elements = container.querySelectorAll(
+        ".sr-animate:not(.sr-animate-active), .sr-fade-up:not(.sr-animate-active), .sr-zoom-in:not(.sr-animate-active), .sr-fade-down:not(.sr-animate-active), .sr-fade-in:not(.sr-animate-active)"
+      );
+      if (!elements.length) return;
+
+      const viewportHeight = isDesktop ? container.clientHeight : window.innerHeight;
+      const rootRect = isDesktop ? container.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const top = rect.top - rootRect.top;
+        const bottom = rect.bottom - rootRect.top;
+        if (top < viewportHeight - 20 && bottom > 0) {
+          el.classList.add("sr-animate-active", "sr-in-view");
+        }
+      });
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("sr-animate-active");
+            entry.target.classList.add("sr-animate-active", "sr-in-view");
           }
         });
       },
       {
-        root: container,
-        threshold: 0.12,
-        rootMargin: "0px 0px -40px 0px"
+        root: isDesktop ? container : null,
+        threshold: 0.05,
+        rootMargin: "0px 0px -20px 0px"
       }
     );
 
-    const elements = container.querySelectorAll(".sr-fade-up, .sr-zoom-in, .sr-fade-down");
+    const elements = container.querySelectorAll(".sr-animate, .sr-fade-up, .sr-zoom-in, .sr-fade-down, .sr-fade-in");
     elements.forEach((el) => observer.observe(el));
+
+    checkAndAnimate();
+    const t1 = setTimeout(checkAndAnimate, 100);
+    const t2 = setTimeout(checkAndAnimate, 300);
+    const t3 = setTimeout(checkAndAnimate, 700);
+    const t4 = setTimeout(checkAndAnimate, 1200);
+
+    const scrollTarget = isDesktop ? container : window;
+    scrollTarget.addEventListener("scroll", checkAndAnimate, { passive: true });
+    window.addEventListener("scroll", checkAndAnimate, { passive: true });
+    window.addEventListener("resize", checkAndAnimate, { passive: true });
 
     return () => {
       elements.forEach((el) => observer.unobserve(el));
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      scrollTarget.removeEventListener("scroll", checkAndAnimate);
+      window.removeEventListener("scroll", checkAndAnimate);
+      window.removeEventListener("resize", checkAndAnimate);
     };
   }, [isOpened]);
 
@@ -411,15 +452,15 @@ export default function RightSidebar({
 
         {/* Bottom Half Invitation Details & Buka Undangan Button */}
         <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-6 pb-12 pt-2 space-y-3.5">
-          <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] uppercase text-[#7A6A5E]">
+          <p className="sr-cover-fade-down text-[11px] sm:text-xs font-semibold tracking-[0.3em] uppercase text-[#7A6A5E]">
             THE WEDDING OF
           </p>
 
-          <h1 className="font-sr-script text-5xl sm:text-6xl text-[#5C4E43] leading-none my-1 font-normal">
+          <h1 className="sr-cover-fade-up sr-delay-100 font-sr-script text-5xl sm:text-6xl text-[#5C4E43] leading-none my-1 font-normal">
             {brideNickname} &amp; {groomNickname}
           </h1>
 
-          <div className="space-y-1 pt-2">
+          <div className="sr-cover-fade-up sr-delay-200 space-y-1 pt-2">
             <p className="text-xs text-[#7A6A5E]">Kepada Yth.</p>
             <p className="text-xs text-[#7A6A5E]">Bapak/Ibu/Saudara/i</p>
             <div className="px-6 py-2 rounded-2xl bg-white/75 backdrop-blur-xs border border-[#5C4E43]/15 shadow-xs mt-1.5 inline-block">
@@ -429,14 +470,14 @@ export default function RightSidebar({
             </div>
           </div>
 
-          <p className="text-[10px] sm:text-[11px] italic text-[#99887C] max-w-xs pt-1 leading-snug">
+          <p className="sr-cover-fade-up sr-delay-300 text-[10px] sm:text-[11px] italic text-[#99887C] max-w-xs pt-1 leading-snug">
             *Mohon maaf jika ada kesalahan dalam penulisan nama / gelar.
           </p>
 
           <button 
             type="button"
             onClick={handleOpenInvitation}
-            className="mt-4 px-8 py-3 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 group hover:shadow-xl"
+            className="sr-cover-fade-up sr-delay-400 mt-4 px-8 py-3 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 group hover:shadow-xl"
           >
             <BookOpen className="w-4 h-4 transition-transform group-hover:scale-110" />
             <span>Buka Undangan</span>
@@ -453,14 +494,14 @@ export default function RightSidebar({
         <section id="hero" className="relative min-h-[100dvh] flex flex-col items-center justify-between px-6 pt-12 pb-16 text-center overflow-hidden">
           <SectionFloralCorners />
 
-          <div className="space-y-2 mt-4 sr-fade-down">
+          <div className="space-y-2 mt-4 sr-animate sr-fade-down sr-delay-100">
             <p className="text-xs font-semibold tracking-[0.3em] uppercase text-[#7A6A5E]">
               THE WEDDING OF
             </p>
           </div>
 
           {/* Circular Framed Photo */}
-          <div className="relative my-4 sr-zoom-in">
+          <div className="relative my-4 sr-animate sr-zoom-in sr-delay-200">
             <div className="w-52 h-52 sm:w-60 sm:h-60 rounded-full overflow-hidden p-1.5 bg-gradient-to-tr from-[#5C4E43]/30 via-white to-[#5C4E43]/40 shadow-xl border-4 border-white/90">
               <img 
                 src="/template/assets/Savethedate-2.jpg" 
@@ -471,7 +512,7 @@ export default function RightSidebar({
           </div>
 
           {/* Names & Date */}
-          <div className="space-y-2 sr-fade-up">
+          <div className="space-y-2 sr-animate sr-fade-up sr-delay-300">
             <h2 className="font-sr-script text-4xl sm:text-5xl text-[#5C4E43] leading-tight">
               {brideNickname} &amp; {groomNickname}
             </h2>
@@ -481,27 +522,27 @@ export default function RightSidebar({
           </div>
 
           {/* Countdown Boxes */}
-          <div className="grid grid-cols-4 gap-2.5 sm:gap-3 w-full max-w-xs my-2 sr-fade-up">
-            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center">
+          <div className="grid grid-cols-4 gap-2.5 sm:gap-3 w-full max-w-xs my-2 sr-animate sr-fade-up sr-delay-400">
+            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center hover:scale-105 transition-transform">
               <span className="text-xl sm:text-2xl font-bold font-mono">{timeLeft.days}</span>
               <span className="text-[10px] sm:text-xs text-[#E8DFD8] uppercase tracking-wider font-medium">Hari</span>
             </div>
-            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center">
+            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center hover:scale-105 transition-transform">
               <span className="text-xl sm:text-2xl font-bold font-mono">{timeLeft.hours}</span>
               <span className="text-[10px] sm:text-xs text-[#E8DFD8] uppercase tracking-wider font-medium">Jam</span>
             </div>
-            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center">
+            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center hover:scale-105 transition-transform">
               <span className="text-xl sm:text-2xl font-bold font-mono">{timeLeft.minutes}</span>
               <span className="text-[10px] sm:text-xs text-[#E8DFD8] uppercase tracking-wider font-medium">Menit</span>
             </div>
-            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center">
+            <div className="bg-[#5C4E43] text-white rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col items-center hover:scale-105 transition-transform">
               <span className="text-xl sm:text-2xl font-bold font-mono">{timeLeft.seconds}</span>
               <span className="text-[10px] sm:text-xs text-[#E8DFD8] uppercase tracking-wider font-medium">Detik</span>
             </div>
           </div>
 
           {/* Save The Date Button */}
-          <div className="sr-fade-up">
+          <div className="sr-animate sr-fade-up sr-delay-500">
             <a 
               href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Putri+%26+Putra&dates=20271228T010000Z/20271228T080000Z&details=Undangan+Pernikahan+Putri+%26+Putra&location=Menara+165+Jakarta"
               target="_blank"
@@ -513,31 +554,31 @@ export default function RightSidebar({
             </a>
           </div>
 
-          <div className="pt-2 animate-bounce">
+          <div className="pt-2 animate-bounce sr-animate sr-fade-up sr-delay-600">
             <ChevronDown className="w-5 h-5 text-[#5C4E43]/60 mx-auto" />
           </div>
         </section>
 
         {/* 2. QUOTE / AYAT SUCI SECTION */}
-        <section className="px-4 sr-fade-up">
-          <div className="bg-[#5C4E43] text-white p-7 sm:p-9 rounded-3xl shadow-xl text-center space-y-4 relative overflow-hidden">
+        <section className="px-4">
+          <div className="bg-[#5C4E43] text-white p-7 sm:p-9 rounded-3xl shadow-xl text-center space-y-4 relative overflow-hidden sr-animate sr-fade-up sr-delay-100">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
             
-            <p className="text-xs sm:text-sm leading-relaxed font-light italic text-[#F4ECE3] max-w-sm mx-auto">
+            <p className="sr-animate sr-fade-up sr-delay-200 text-xs sm:text-sm leading-relaxed font-light italic text-[#F4ECE3] max-w-sm mx-auto">
               &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
             </p>
 
-            <p className="text-xs sm:text-sm font-bold text-white tracking-widest uppercase">
+            <p className="sr-animate sr-fade-up sr-delay-300 text-xs sm:text-sm font-bold text-white tracking-widest uppercase">
               Q.S Ar-Rum : 21
             </p>
           </div>
         </section>
 
         {/* 3. MEMPELAI (COUPLE PROFILE) SECTION */}
-        <section id="mempelai" className="relative px-6 py-10 text-center space-y-8 bg-white/40 backdrop-blur-xs rounded-3xl mx-3 border border-white/60 shadow-xs overflow-hidden sr-fade-up">
+        <section id="mempelai" className="relative px-6 py-10 text-center space-y-8 bg-white/40 backdrop-blur-xs rounded-3xl mx-3 border border-white/60 shadow-xs overflow-hidden sr-animate sr-fade-up">
           <SectionFloralCorners />
           
-          <div className="space-y-3 pt-2 sr-fade-down">
+          <div className="space-y-3 pt-2 sr-animate sr-fade-down sr-delay-100">
             <h3 className="text-xs sm:text-sm font-bold text-[#5C4E43] tracking-wide">
               Assalamu’alaikum Warahmatullahi Wabarakatuh
             </h3>
@@ -548,17 +589,17 @@ export default function RightSidebar({
 
           {/* Mempelai Wanita */}
           <div className="space-y-3 flex flex-col items-center">
-            <div className="w-36 h-36 rounded-full overflow-hidden p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-zoom-in">
+            <div className="w-36 h-36 rounded-full overflow-hidden p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-animate sr-zoom-in sr-delay-200">
               <img 
                 src={bridePhoto} 
                 alt={brideFull} 
-                className="w-full h-full object-cover rounded-full" 
+                className="w-full h-full object-cover rounded-full hover:scale-105 transition-transform duration-500" 
               />
             </div>
-            <h4 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] leading-none pt-1 sr-fade-up">
+            <h4 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] leading-none pt-1 sr-animate sr-fade-up sr-delay-300">
               {brideFull}
             </h4>
-            <p className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed sr-fade-up">
+            <p className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed sr-animate sr-fade-up sr-delay-400">
               {brideParents}
             </p>
             {brideIg && (
@@ -566,7 +607,7 @@ export default function RightSidebar({
                 href={`https://instagram.com/${brideIg}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#5C4E43] text-white rounded-full text-[11px] font-medium shadow-xs hover:bg-[#4a3e35] transition-all sr-fade-up"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#5C4E43] text-white rounded-full text-[11px] font-medium shadow-xs hover:bg-[#4a3e35] transition-all sr-animate sr-fade-up sr-delay-500"
               >
                 <InstagramIcon className="w-3.5 h-3.5" />
                 <span>@{brideIg}</span>
@@ -575,23 +616,23 @@ export default function RightSidebar({
           </div>
 
           {/* Ampersand Divider */}
-          <div className="font-sr-script text-4xl text-[#5C4E43]/80 my-2">
+          <div className="font-sr-script text-4xl text-[#5C4E43]/80 my-2 sr-animate sr-zoom-in sr-delay-300">
             &amp;
           </div>
 
           {/* Mempelai Pria */}
           <div className="space-y-3 flex flex-col items-center">
-            <div className="w-36 h-36 rounded-full overflow-hidden p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-zoom-in">
+            <div className="w-36 h-36 rounded-full overflow-hidden p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-animate sr-zoom-in sr-delay-200">
               <img 
                 src={groomPhoto} 
                 alt={groomFull} 
-                className="w-full h-full object-cover rounded-full" 
+                className="w-full h-full object-cover rounded-full hover:scale-105 transition-transform duration-500" 
               />
             </div>
-            <h4 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] leading-none pt-1 sr-fade-up">
+            <h4 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] leading-none pt-1 sr-animate sr-fade-up sr-delay-300">
               {groomFull}
             </h4>
-            <p className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed sr-fade-up">
+            <p className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed sr-animate sr-fade-up sr-delay-400">
               {groomParents}
             </p>
             {groomIg && (
@@ -599,7 +640,7 @@ export default function RightSidebar({
                 href={`https://instagram.com/${groomIg}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#5C4E43] text-white rounded-full text-[11px] font-medium shadow-xs hover:bg-[#4a3e35] transition-all sr-fade-up"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#5C4E43] text-white rounded-full text-[11px] font-medium shadow-xs hover:bg-[#4a3e35] transition-all sr-animate sr-fade-up sr-delay-500"
               >
                 <InstagramIcon className="w-3.5 h-3.5" />
                 <span>@{groomIg}</span>
@@ -611,15 +652,15 @@ export default function RightSidebar({
         {/* 4. ACARA (EVENTS: AKAD & RESEPSI) SECTION */}
         <section id="acara" className="space-y-6 px-4">
           {/* Akad Nikah Card */}
-          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-xs border border-white shadow-md text-center space-y-5 overflow-hidden sr-fade-up">
+          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-xs border border-white shadow-md text-center space-y-5 overflow-hidden sr-animate sr-fade-up">
             <SectionFloralCorners />
 
-            <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
+            <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] sr-animate sr-fade-down sr-delay-100">
               Akad Nikah
             </h3>
 
             {/* 3-Column Calendar Box */}
-            <div className="flex items-center justify-center gap-4 py-2 border-y border-[#5C4E43]/15">
+            <div className="flex items-center justify-center gap-4 py-2 border-y border-[#5C4E43]/15 sr-animate sr-zoom-in sr-delay-200">
               <span className="text-sm font-semibold text-[#7A6A5E] uppercase tracking-wider">
                 Minggu
               </span>
@@ -635,7 +676,7 @@ export default function RightSidebar({
             </div>
 
             {/* Time & Location */}
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 sr-animate sr-fade-up sr-delay-300">
               <p className="text-xs font-semibold text-[#5C4E43] flex items-center justify-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#5C4E43]" />
                 <span>08:00 WIB</span>
@@ -649,27 +690,29 @@ export default function RightSidebar({
               </div>
             </div>
 
-            <a 
-              href="https://maps.google.com/?q=Menara+165+Jakarta"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
-            >
-              <MapPin className="w-3.5 h-3.5" />
-              <span>Google Maps</span>
-            </a>
+            <div className="sr-animate sr-fade-up sr-delay-400">
+              <a 
+                href="https://maps.google.com/?q=Menara+165+Jakarta"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Google Maps</span>
+              </a>
+            </div>
           </div>
 
           {/* Resepsi Card */}
-          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-xs border border-white shadow-md text-center space-y-5 overflow-hidden sr-fade-up">
+          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-xs border border-white shadow-md text-center space-y-5 overflow-hidden sr-animate sr-fade-up sr-delay-100">
             <SectionFloralCorners />
 
-            <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
+            <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] sr-animate sr-fade-down sr-delay-100">
               Resepsi
             </h3>
 
             {/* 3-Column Calendar Box */}
-            <div className="flex items-center justify-center gap-4 py-2 border-y border-[#5C4E43]/15">
+            <div className="flex items-center justify-center gap-4 py-2 border-y border-[#5C4E43]/15 sr-animate sr-zoom-in sr-delay-200">
               <span className="text-sm font-semibold text-[#7A6A5E] uppercase tracking-wider">
                 Minggu
               </span>
@@ -685,7 +728,7 @@ export default function RightSidebar({
             </div>
 
             {/* Time & Location */}
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 sr-animate sr-fade-up sr-delay-300">
               <p className="text-xs font-semibold text-[#5C4E43] flex items-center justify-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#5C4E43]" />
                 <span>11:00 - Selesai WIB</span>
@@ -699,45 +742,49 @@ export default function RightSidebar({
               </div>
             </div>
 
-            <a 
-              href="https://maps.google.com/?q=Menara+165+Jakarta"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
-            >
-              <MapPin className="w-3.5 h-3.5" />
-              <span>Google Maps</span>
-            </a>
+            <div className="sr-animate sr-fade-up sr-delay-400">
+              <a 
+                href="https://maps.google.com/?q=Menara+165+Jakarta"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Google Maps</span>
+              </a>
+            </div>
           </div>
         </section>
 
         {/* 5. LIVE STREAMING SECTION */}
-        <section className="px-4 sr-fade-up">
-          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-xs border border-white shadow-md text-center space-y-4 overflow-hidden">
+        <section className="px-4">
+          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-xs border border-white shadow-md text-center space-y-4 overflow-hidden sr-animate sr-fade-up">
             <SectionFloralCorners />
 
-            <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
+            <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] sr-animate sr-fade-down sr-delay-100">
               Live Streaming
             </h3>
-            <p className="text-xs text-[#7A6A5E] leading-relaxed max-w-xs mx-auto">
+            <p className="text-xs text-[#7A6A5E] leading-relaxed max-w-xs mx-auto sr-animate sr-fade-up sr-delay-200">
               Temui kami secara virtual untuk menyaksikan acara pernikahan kami yang insyaaAllah akan disiarkan langsung melalui tautan di bawah ini.
             </p>
-            <a 
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
-            >
-              <Video className="w-3.5 h-3.5" />
-              <span>Lihat Live Streaming</span>
-            </a>
+            <div className="sr-animate sr-fade-up sr-delay-300">
+              <a 
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
+              >
+                <Video className="w-3.5 h-3.5" />
+                <span>Lihat Live Streaming</span>
+              </a>
+            </div>
           </div>
         </section>
 
         {/* 6. LOVE STORY SECTION */}
-        <section className="relative px-4 py-8 space-y-6 sr-fade-up overflow-hidden">
+        <section className="relative px-4 py-8 space-y-6 overflow-hidden">
           <SectionFloralCorners />
-          <div className="text-center space-y-1">
+          <div className="text-center space-y-1 sr-animate sr-fade-down sr-delay-100">
             <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
               Love Story
             </h3>
@@ -748,12 +795,12 @@ export default function RightSidebar({
 
           <div className="relative pl-6 space-y-6 border-l-2 border-[#5C4E43]/20 ml-4">
             {/* Story 1 */}
-            <div className="relative space-y-3 bg-white/75 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-white shadow-xs sr-fade-up">
+            <div className="relative space-y-3 bg-white/75 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-white shadow-xs sr-animate sr-fade-up sr-delay-200">
               <div className="absolute -left-[35px] top-4 w-6 h-6 rounded-full bg-[#5C4E43] text-white flex items-center justify-center shadow-xs">
                 <Heart className="w-3 h-3 fill-current" />
               </div>
               <div className="w-full h-44 rounded-xl overflow-hidden shadow-xs">
-                <img src="/template/assets/1-3.jpeg" alt="Story 1" className="w-full h-full object-cover" />
+                <img src="/template/assets/1-3.jpeg" alt="Story 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
               <p className="text-xs font-bold text-[#5C4E43] tracking-wider uppercase">
                 25 AGUSTUS 2023
@@ -764,12 +811,12 @@ export default function RightSidebar({
             </div>
 
             {/* Story 2 */}
-            <div className="relative space-y-3 bg-white/75 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-white shadow-xs sr-fade-up">
+            <div className="relative space-y-3 bg-white/75 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-white shadow-xs sr-animate sr-fade-up sr-delay-300">
               <div className="absolute -left-[35px] top-4 w-6 h-6 rounded-full bg-[#5C4E43] text-white flex items-center justify-center shadow-xs">
                 <Heart className="w-3 h-3 fill-current" />
               </div>
               <div className="w-full h-44 rounded-xl overflow-hidden shadow-xs">
-                <img src="/template/assets/3.jpeg" alt="Story 2" className="w-full h-full object-cover" />
+                <img src="/template/assets/3.jpeg" alt="Story 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
               <p className="text-xs font-bold text-[#5C4E43] tracking-wider uppercase">
                 03 JUNI 2024
@@ -780,12 +827,12 @@ export default function RightSidebar({
             </div>
 
             {/* Story 3 */}
-            <div className="relative space-y-3 bg-white/75 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-white shadow-xs sr-fade-up">
+            <div className="relative space-y-3 bg-white/75 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-white shadow-xs sr-animate sr-fade-up sr-delay-400">
               <div className="absolute -left-[35px] top-4 w-6 h-6 rounded-full bg-[#5C4E43] text-white flex items-center justify-center shadow-xs">
                 <Heart className="w-3 h-3 fill-current" />
               </div>
               <div className="w-full h-44 rounded-xl overflow-hidden shadow-xs">
-                <img src="/template/assets/4.jpeg" alt="Story 3" className="w-full h-full object-cover" />
+                <img src="/template/assets/4.jpeg" alt="Story 3" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
               <p className="text-xs font-bold text-[#5C4E43] tracking-wider uppercase">
                 MENUJU PELAMINAN
@@ -798,9 +845,9 @@ export default function RightSidebar({
         </section>
 
         {/* 7. OUR MOMENTS (GALLERY & VIDEO) SECTION */}
-        <section id="galeri" className="relative px-4 py-8 space-y-6 sr-fade-up overflow-hidden">
+        <section id="galeri" className="relative px-4 py-8 space-y-6 overflow-hidden">
           <SectionFloralCorners />
-          <div className="text-center space-y-1">
+          <div className="text-center space-y-1 sr-animate sr-fade-down sr-delay-100">
             <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
               Our Moments
             </h3>
@@ -810,7 +857,7 @@ export default function RightSidebar({
           </div>
 
           {/* YouTube Embed Player */}
-          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-lg border-2 border-white sr-zoom-in">
+          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-lg border-2 border-white sr-animate sr-zoom-in sr-delay-200">
             <iframe
               src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0"
               title="Wedding Moments Video"
@@ -821,12 +868,14 @@ export default function RightSidebar({
           </div>
 
           {/* 2-Column Photo Grid */}
-          <div className="grid grid-cols-2 gap-3 sr-fade-up">
+          <div className="grid grid-cols-2 gap-3">
             {galleryPhotos.map((src, i) => (
               <div 
                 key={i} 
                 onClick={() => setSelectedImage(src)}
-                className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-xs border border-white cursor-pointer group bg-slate-100"
+                className={`relative aspect-[3/4] rounded-2xl overflow-hidden shadow-xs border border-white cursor-pointer group bg-slate-100 sr-animate sr-zoom-in ${
+                  i % 4 === 0 ? "sr-delay-100" : i % 4 === 1 ? "sr-delay-200" : i % 4 === 2 ? "sr-delay-300" : "sr-delay-400"
+                }`}
               >
                 <img 
                   src={src} 
@@ -842,25 +891,27 @@ export default function RightSidebar({
         </section>
 
         {/* 8. WEDDING GIFT / AMPLOP DIGITAL SECTION */}
-        <section id="gift" className="px-4 sr-fade-up">
-          <div className="bg-[#5C4E43] text-white p-7 sm:p-9 rounded-3xl shadow-xl text-center space-y-5 relative overflow-hidden">
-            <div className="space-y-2">
+        <section id="gift" className="px-4">
+          <div className="bg-[#5C4E43] text-white p-7 sm:p-9 rounded-3xl shadow-xl text-center space-y-5 relative overflow-hidden sr-animate sr-fade-up">
+            <div className="space-y-2 sr-animate sr-fade-down sr-delay-100">
               <h3 className="font-sr-script text-3xl sm:text-4xl text-white">
                 Wedding Gift
               </h3>
-              <p className="text-xs text-[#E8DFD8] leading-relaxed max-w-sm mx-auto">
+              <p className="text-xs text-[#E8DFD8] leading-relaxed max-w-sm mx-auto sr-animate sr-fade-up sr-delay-200">
                 Doa Restu Anda merupakan karunia yang sangat berarti bagi kami. Dan jika memberi adalah ungkapan tanda kasih, Anda dapat memberi melalui informasi di bawah ini.
               </p>
             </div>
 
-            <button 
-              type="button"
-              onClick={() => setShowGiftDetails(!showGiftDetails)}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-[#5C4E43] hover:bg-[#F4ECE3] rounded-full text-xs font-bold shadow-md cursor-pointer transition-all active:scale-95"
-            >
-              <Gift className="w-3.5 h-3.5" />
-              <span>{showGiftDetails ? "Tutup Rekening" : "Klik di Sini"}</span>
-            </button>
+            <div className="sr-animate sr-fade-up sr-delay-300">
+              <button 
+                type="button"
+                onClick={() => setShowGiftDetails(!showGiftDetails)}
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-[#5C4E43] hover:bg-[#F4ECE3] rounded-full text-xs font-bold shadow-md cursor-pointer transition-all active:scale-95 hover:shadow-lg"
+              >
+                <Gift className="w-3.5 h-3.5" />
+                <span>{showGiftDetails ? "Tutup Rekening" : "Klik di Sini"}</span>
+              </button>
+            </div>
 
             {/* Bank Cards Accordion */}
             {showGiftDetails && (
@@ -958,11 +1009,11 @@ export default function RightSidebar({
         </section>
 
         {/* 9. UCAPAN & RSVP SECTION */}
-        <section id="ucapan" className="px-4 space-y-6 sr-fade-up">
-          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/75 backdrop-blur-xs border border-white shadow-md space-y-6 overflow-hidden">
+        <section id="ucapan" className="px-4 space-y-6">
+          <div className="relative p-7 sm:p-8 rounded-3xl bg-white/75 backdrop-blur-xs border border-white shadow-md space-y-6 overflow-hidden sr-animate sr-fade-up">
             <SectionFloralCorners />
 
-            <div className="text-center space-y-1 sr-fade-down">
+            <div className="text-center space-y-1 sr-animate sr-fade-down sr-delay-100">
               <h3 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43]">
                 Ucapan &amp; RSVP
               </h3>
@@ -972,7 +1023,7 @@ export default function RightSidebar({
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmitWish} className="space-y-4 text-left">
+            <form onSubmit={handleSubmitWish} className="space-y-4 text-left sr-animate sr-fade-up sr-delay-200">
               <div className="space-y-1">
                 <label className="text-[11px] font-bold text-[#5C4E43] uppercase tracking-wider block">
                   Nama Anda *
@@ -1111,13 +1162,13 @@ export default function RightSidebar({
         </section>
 
         {/* 10. CLOSING & FOOTER SECTION */}
-        <section className="relative px-6 py-10 text-center space-y-6 sr-fade-up overflow-hidden">
+        <section className="relative px-6 py-10 text-center space-y-6 overflow-hidden">
           <SectionFloralCorners />
-          <div className="w-36 h-36 rounded-full overflow-hidden mx-auto p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-zoom-in">
-            <img src="/template/assets/IMG_7981.jpg" alt="Couple" className="w-full h-full object-cover rounded-full" />
+          <div className="w-36 h-36 rounded-full overflow-hidden mx-auto p-1 bg-white shadow-lg border-2 border-[#5C4E43]/20 sr-animate sr-zoom-in sr-delay-100">
+            <img src="/template/assets/IMG_7981.jpg" alt="Couple" className="w-full h-full object-cover rounded-full hover:scale-105 transition-transform duration-500" />
           </div>
 
-          <div className="space-y-2 max-w-xs mx-auto">
+          <div className="space-y-2 max-w-xs mx-auto sr-animate sr-fade-up sr-delay-200">
             <p className="text-xs text-[#7A6A5E] leading-relaxed">
               Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami.
             </p>
@@ -1125,12 +1176,12 @@ export default function RightSidebar({
               Wassalamu’alaikum Warahmatullahi Wabarakatuh
             </p>
             <p className="text-xs text-[#7A6A5E]">Kami yang berbahagia,</p>
-            <h4 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] pt-1">
+            <h4 className="font-sr-script text-3xl sm:text-4xl text-[#5C4E43] pt-1 sr-animate sr-fade-up sr-delay-300">
               {brideNickname} &amp; {groomNickname}
             </h4>
           </div>
 
-          <div className="pt-8 border-t border-[#5C4E43]/15 text-center space-y-1">
+          <div className="pt-8 border-t border-[#5C4E43]/15 text-center space-y-1 sr-animate sr-fade-up sr-delay-400">
             <p className="text-[10px] tracking-widest text-[#7A6A5E] uppercase font-bold">
               SERA STORY DIGITAL INVITATION
             </p>

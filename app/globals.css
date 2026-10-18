@@ -117,38 +117,120 @@ body {
   animation: rusticDiscRotate 6s linear infinite;
 }
 
-/* Smooth Entrance on Scroll (Elementor 1:1 match) */
-.sr-fade-up {
+/* ========================================================
+   WIDGET ENTRANCE EFFECTS (Matching luxury-01 & Elementor)
+   ======================================================== */
+@keyframes srFadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes srFadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes srZoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.86, 0.86, 0.86);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes srFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Base widget state: initially hidden */
+.sr-animate,
+.sr-fade-up,
+.sr-fade-down,
+.sr-zoom-in,
+.sr-fade-in {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
+
+/* Triggered widget state (smooth springy glide into position) */
+.sr-animate.sr-in-view,
+.sr-animate.sr-animate-active,
+.sr-fade-up.sr-in-view,
+.sr-fade-up.sr-animate-active,
+.sr-fade-down.sr-in-view,
+.sr-fade-down.sr-animate-active,
+.sr-zoom-in.sr-in-view,
+.sr-zoom-in.sr-animate-active,
+.sr-fade-in.sr-in-view,
+.sr-fade-in.sr-animate-active {
+  opacity: 1;
+  animation-duration: 0.95s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sr-fade-up.sr-in-view,
 .sr-fade-up.sr-animate-active {
-  opacity: 1;
-  transform: translateY(0);
+  animation-name: srFadeInUp;
 }
 
-.sr-zoom-in {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-.sr-zoom-in.sr-animate-active {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.sr-fade-down {
-  opacity: 0;
-  transform: translateY(-24px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
+.sr-fade-down.sr-in-view,
 .sr-fade-down.sr-animate-active {
-  opacity: 1;
-  transform: translateY(0);
+  animation-name: srFadeInDown;
+}
+
+.sr-zoom-in.sr-in-view,
+.sr-zoom-in.sr-animate-active {
+  animation-name: srZoomIn;
+}
+
+.sr-fade-in.sr-in-view,
+.sr-fade-in.sr-animate-active {
+  animation-name: srFadeIn;
+}
+
+/* Stagger Delays (Matching luxury-01 elementor-settings) */
+.sr-delay-100 { animation-delay: 100ms !important; }
+.sr-delay-200 { animation-delay: 200ms !important; }
+.sr-delay-300 { animation-delay: 300ms !important; }
+.sr-delay-400 { animation-delay: 400ms !important; }
+.sr-delay-500 { animation-delay: 500ms !important; }
+.sr-delay-600 { animation-delay: 600ms !important; }
+.sr-delay-700 { animation-delay: 700ms !important; }
+.sr-delay-800 { animation-delay: 800ms !important; }
+
+/* Immediate animations for Cover screen on page load */
+.sr-cover-fade-down {
+  animation: srFadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.sr-cover-fade-up {
+  animation: srFadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.sr-cover-zoom-in {
+  animation: srZoomIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .font-sr-script {

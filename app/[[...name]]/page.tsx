@@ -206,15 +206,15 @@ export default async function Home({ params, searchParams }: Props) {
 
         {/* Center Typography (Clean layout matching s01) */}
         <div className="relative z-20 text-center select-none px-6 space-y-3">
-          <p className="text-xs lg:text-sm font-semibold tracking-[0.35em] uppercase text-[#7A6A5E]">
+          <p className="sr-cover-fade-down text-xs lg:text-sm font-semibold tracking-[0.35em] uppercase text-[#7A6A5E]">
             THE WEDDING OF
           </p>
 
-          <h1 className="font-sr-script text-6xl md:text-7xl lg:text-8xl text-[#5C4E43] leading-tight font-normal drop-shadow-xs my-2">
+          <h1 className="sr-cover-fade-up sr-delay-200 font-sr-script text-6xl md:text-7xl lg:text-8xl text-[#5C4E43] leading-tight font-normal drop-shadow-xs my-2">
             {brideNickname} &amp; {groomNickname}
           </h1>
 
-          <p className="text-sm lg:text-base font-medium text-[#7A6A5E] tracking-wider">
+          <p className="sr-cover-fade-up sr-delay-300 text-sm lg:text-base font-medium text-[#7A6A5E] tracking-wider">
             {formattedDate}
           </p>
         </div>
