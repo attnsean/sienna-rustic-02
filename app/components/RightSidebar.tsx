@@ -169,8 +169,40 @@ export default function RightSidebar({
   const groomPhoto = project?.groom_photo_url || "/template/assets/Groom.jpg";
   const musicSrc = project?.music_url || "/template/assets/Komang-Raim-Laode.mp3";
 
-  // Target Wedding Date Countdown (28 Desember 2027)
-  const targetDate = new Date("2027-12-28T08:00:00").getTime();
+  // Events (Akad & Resepsi)
+  const akadEvent = events?.find(e => e.event_type?.toLowerCase().includes("akad") || e.custom_label?.toLowerCase().includes("akad")) || events?.[0] || null;
+  const resepsiEvent = events?.find(e => e.event_type?.toLowerCase().includes("resepsi") || e.custom_label?.toLowerCase().includes("resepsi")) || (events && events.length > 1 ? events[1] : null) || null;
+
+  const parseEventDate = (dateStr?: string | null) => {
+    const d = dateStr ? new Date(dateStr) : new Date("2027-12-28");
+    const valid = !isNaN(d.getTime());
+    const finalDate = valid ? d : new Date("2027-12-28");
+    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return {
+      day: days[finalDate.getDay()],
+      date: String(finalDate.getDate()),
+      year: String(finalDate.getFullYear()),
+      month: months[finalDate.getMonth()]
+    };
+  };
+
+  const akadCal = parseEventDate(akadEvent?.event_date);
+  const resepsiCal = parseEventDate(resepsiEvent?.event_date || akadEvent?.event_date);
+
+  const akadTime = akadEvent?.event_time ? `${akadEvent.event_time}${akadEvent.end_time ? ` - ${akadEvent.end_time}` : ""} WIB` : "08:00 WIB";
+  const akadVenue = akadEvent?.venue_name || "Menara 165";
+  const akadAddress = akadEvent?.venue_address || "Jl. TB Simatupang No.Kav. 1, Cilandak Tim., Ps. Minggu, Kota Jakarta Selatan";
+  const akadMaps = akadEvent?.venue_maps_url || "https://maps.google.com/?q=Menara+165+Jakarta";
+
+  const resepsiTime = resepsiEvent?.event_time ? `${resepsiEvent.event_time}${resepsiEvent.end_time ? ` - ${resepsiEvent.end_time}` : ""} WIB` : "11:00 - Selesai WIB";
+  const resepsiVenue = resepsiEvent?.venue_name || "Menara 165";
+  const resepsiAddress = resepsiEvent?.venue_address || "Jl. TB Simatupang No.Kav. 1, Cilandak Tim., Ps. Minggu, Kota Jakarta Selatan";
+  const resepsiMaps = resepsiEvent?.venue_maps_url || "https://maps.google.com/?q=Menara+165+Jakarta";
+
+  // Target Wedding Date Countdown
+  const countdownDateRaw = project?.countdown_target || project?.wedding_date || akadEvent?.event_date || "2027-12-28T08:00:00";
+  const targetDate = new Date(countdownDateRaw.includes("T") ? countdownDateRaw : `${countdownDateRaw}T08:00:00`).getTime();
   const [timeLeft, setTimeLeft] = useState({
     days: "436",
     hours: "02",
@@ -378,8 +410,8 @@ export default function RightSidebar({
     setTimeout(() => setSubmitSuccess(false), 4000);
   };
 
-  // Gallery photos
-  const galleryPhotos = [
+  // Gallery photos (R2 storage sync with fallback to default demo images)
+  const defaultGallery = [
     "/template/assets/5.jpeg",
     "/template/assets/6.jpeg",
     "/template/assets/7.jpeg",
@@ -391,6 +423,10 @@ export default function RightSidebar({
     "/template/assets/4.jpeg",
     "/template/assets/Resepsi-1-1.jpg"
   ];
+  const dbGallery = (project?.gallery_photos && Array.isArray(project.gallery_photos) && project.gallery_photos.length > 0)
+    ? project.gallery_photos.map(p => typeof p === "string" ? p : p?.url || p?.public_url || "").filter(Boolean)
+    : [];
+  const galleryPhotos = dbGallery.length > 0 ? dbGallery : defaultGallery;
 
   const scrollToSection = (id: string) => {
     setActiveNav(id);
@@ -685,16 +721,16 @@ export default function RightSidebar({
             {/* 3-Column Calendar Box */}
             <div className="flex items-center justify-center gap-4 py-2 border-y border-[#5C4E43]/15 sr-animate sr-zoom-in sr-delay-200">
               <span className="text-sm font-semibold text-[#7A6A5E] uppercase tracking-wider">
-                Minggu
+                {akadCal.day}
               </span>
               <div className="px-4 border-x border-[#5C4E43]/20 text-center">
                 <span className="text-3xl sm:text-4xl font-bold text-[#5C4E43] font-mono leading-none block">
-                  28
+                  {akadCal.date}
                 </span>
-                <span className="text-[10px] text-[#7A6A5E] font-medium">2027</span>
+                <span className="text-[10px] text-[#7A6A5E] font-medium">{akadCal.year}</span>
               </div>
               <span className="text-sm font-semibold text-[#7A6A5E] uppercase tracking-wider">
-                Desember
+                {akadCal.month}
               </span>
             </div>
 
@@ -702,20 +738,20 @@ export default function RightSidebar({
             <div className="space-y-1.5 sr-animate sr-fade-up sr-delay-300">
               <p className="text-xs font-semibold text-[#5C4E43] flex items-center justify-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#5C4E43]" />
-                <span>08:00 WIB</span>
+                <span>{akadTime}</span>
               </p>
               <div className="pt-2 space-y-1">
                 <p className="text-xs font-bold text-[#3C2A21]">Lokasi Acara</p>
-                <p className="text-xs font-medium text-[#5C4E43]">Menara 165</p>
+                <p className="text-xs font-medium text-[#5C4E43]">{akadVenue}</p>
                 <p className="text-[11px] text-[#7A6A5E] leading-relaxed max-w-xs mx-auto">
-                  Jl. TB Simatupang No.Kav. 1, Cilandak Tim., Ps. Minggu, Kota Jakarta Selatan
+                  {akadAddress}
                 </p>
               </div>
             </div>
 
             <div className="sr-animate sr-fade-up sr-delay-400">
               <a 
-                href="https://maps.google.com/?q=Menara+165+Jakarta"
+                href={akadMaps}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
@@ -737,16 +773,16 @@ export default function RightSidebar({
             {/* 3-Column Calendar Box */}
             <div className="flex items-center justify-center gap-4 py-2 border-y border-[#5C4E43]/15 sr-animate sr-zoom-in sr-delay-200">
               <span className="text-sm font-semibold text-[#7A6A5E] uppercase tracking-wider">
-                Minggu
+                {resepsiCal.day}
               </span>
               <div className="px-4 border-x border-[#5C4E43]/20 text-center">
                 <span className="text-3xl sm:text-4xl font-bold text-[#5C4E43] font-mono leading-none block">
-                  28
+                  {resepsiCal.date}
                 </span>
-                <span className="text-[10px] text-[#7A6A5E] font-medium">2027</span>
+                <span className="text-[10px] text-[#7A6A5E] font-medium">{resepsiCal.year}</span>
               </div>
               <span className="text-sm font-semibold text-[#7A6A5E] uppercase tracking-wider">
-                Desember
+                {resepsiCal.month}
               </span>
             </div>
 
@@ -754,20 +790,20 @@ export default function RightSidebar({
             <div className="space-y-1.5 sr-animate sr-fade-up sr-delay-300">
               <p className="text-xs font-semibold text-[#5C4E43] flex items-center justify-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#5C4E43]" />
-                <span>11:00 - Selesai WIB</span>
+                <span>{resepsiTime}</span>
               </p>
               <div className="pt-2 space-y-1">
                 <p className="text-xs font-bold text-[#3C2A21]">Lokasi Acara</p>
-                <p className="text-xs font-medium text-[#5C4E43]">Menara 165</p>
+                <p className="text-xs font-medium text-[#5C4E43]">{resepsiVenue}</p>
                 <p className="text-[11px] text-[#7A6A5E] leading-relaxed max-w-xs mx-auto">
-                  Jl. TB Simatupang No.Kav. 1, Cilandak Tim., Ps. Minggu, Kota Jakarta Selatan
+                  {resepsiAddress}
                 </p>
               </div>
             </div>
 
             <div className="sr-animate sr-fade-up sr-delay-400">
               <a 
-                href="https://maps.google.com/?q=Menara+165+Jakarta"
+                href={resepsiMaps}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-full text-xs font-semibold shadow-md transition-all active:scale-95"
@@ -939,65 +975,106 @@ export default function RightSidebar({
             {/* Bank Cards Accordion */}
             {showGiftDetails && (
               <div className="space-y-4 pt-4 text-left animate-fadeIn">
-                {/* BCA Card */}
-                <div className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3">
-                  <div className="flex items-center justify-between">
-                    <img src="/template/assets/bca-150x50.png" alt="BCA" className="h-6 w-auto object-contain" />
-                    <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
-                    <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">123123123</p>
-                  </div>
-                  <p className="text-xs font-medium text-[#5C4E43]">a.n. Putri Cantika Sara</p>
-                  <button 
-                    type="button"
-                    onClick={() => handleCopy("123123123", "bca")}
-                    className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                  >
-                    {copiedKey === "bca" ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-300" />
-                        <span>Berhasil Disalin!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Salin No. Rekening</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                {project?.payment_accounts && Array.isArray(project.payment_accounts) && project.payment_accounts.length > 0 ? (
+                  project.payment_accounts.map((acc: any, idx: number) => {
+                    const bankName = (acc.bank_name || acc.bank || "Bank").toUpperCase();
+                    const accNumber = acc.account_number || acc.number || acc.rekening || "";
+                    const accHolder = acc.account_holder || acc.name || acc.holder || "";
+                    const key = `acc-${idx}`;
+                    return (
+                      <div key={key} className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-sm text-[#5C4E43] tracking-wide">{bankName}</span>
+                          <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
+                        </div>
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
+                          <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">{accNumber}</p>
+                        </div>
+                        <p className="text-xs font-medium text-[#5C4E43]">a.n. {accHolder}</p>
+                        <button 
+                          type="button"
+                          onClick={() => handleCopy(accNumber, key)}
+                          className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                        >
+                          {copiedKey === key ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-300" />
+                              <span>Berhasil Disalin!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>Salin No. Rekening</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    {/* BCA Card Default */}
+                    <div className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3">
+                      <div className="flex items-center justify-between">
+                        <img src="/template/assets/bca-150x50.png" alt="BCA" className="h-6 w-auto object-contain" />
+                        <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
+                        <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">123123123</p>
+                      </div>
+                      <p className="text-xs font-medium text-[#5C4E43]">a.n. Putri Cantika Sara</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy("123123123", "bca")}
+                        className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                      >
+                        {copiedKey === "bca" ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-300" />
+                            <span>Berhasil Disalin!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Salin No. Rekening</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
 
-                {/* BRI Card */}
-                <div className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3">
-                  <div className="flex items-center justify-between">
-                    <img src="/template/assets/bri-150x50.png" alt="BRI" className="h-6 w-auto object-contain" />
-                    <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
-                    <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">321321321</p>
-                  </div>
-                  <p className="text-xs font-medium text-[#5C4E43]">a.n. Putra Andika Pratama</p>
-                  <button 
-                    type="button"
-                    onClick={() => handleCopy("321321321", "bri")}
-                    className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                  >
-                    {copiedKey === "bri" ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-300" />
-                        <span>Berhasil Disalin!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Salin No. Rekening</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                    {/* BRI Card Default */}
+                    <div className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3">
+                      <div className="flex items-center justify-between">
+                        <img src="/template/assets/bri-150x50.png" alt="BRI" className="h-6 w-auto object-contain" />
+                        <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
+                        <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">321321321</p>
+                      </div>
+                      <p className="text-xs font-medium text-[#5C4E43]">a.n. Putra Andika Pratama</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy("321321321", "bri")}
+                        className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                      >
+                        {copiedKey === "bri" ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-300" />
+                            <span>Berhasil Disalin!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Salin No. Rekening</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                )}
 
                 {/* Physical Gift Address */}
                 <div className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 space-y-2">
