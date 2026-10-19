@@ -35,15 +35,15 @@ const InstagramIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) =>
   </svg>
 );
 
-// Reusable 4-Corner Floral Leaves (Feathered edge, negative corner bleed, scaled down)
+// Reusable 4-Corner Floral Leaves (Anchored flush to corner, breathing pulse matching invisimple s01)
 const SectionFloralCorners = ({ 
-  size = "w-14 sm:w-16 md:w-18" 
+  size = "w-24 sm:w-28 md:w-32" 
 }: { 
   size?: string;
 }) => (
   <>
-    {/* Top-Left: natural orientation with gentle anchored swaying */}
-    <div className="absolute -top-1.5 -left-1.5 pointer-events-none z-10 select-none animate-floral-tl">
+    {/* Top-Left: natural orientation with gentle anchored breathing pulse */}
+    <div className="absolute -top-1 -left-1 pointer-events-none z-10 select-none animate-floral-tl">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
@@ -51,8 +51,8 @@ const SectionFloralCorners = ({
         className={`${size} pointer-events-none select-none`} 
       />
     </div>
-    {/* Top-Right: flipped horizontally with gentle anchored swaying */}
-    <div className="absolute -top-1.5 -right-1.5 pointer-events-none z-10 select-none animate-floral-tr">
+    {/* Top-Right: flipped horizontally with gentle anchored breathing pulse */}
+    <div className="absolute -top-1 -right-1 pointer-events-none z-10 select-none animate-floral-tr">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
@@ -60,8 +60,8 @@ const SectionFloralCorners = ({
         className={`${size} scale-x-[-1] pointer-events-none select-none`} 
       />
     </div>
-    {/* Bottom-Left: flipped vertically with gentle anchored swaying */}
-    <div className="absolute -bottom-1.5 -left-1.5 pointer-events-none z-10 select-none animate-floral-bl">
+    {/* Bottom-Left: flipped vertically with gentle anchored breathing pulse */}
+    <div className="absolute -bottom-1 -left-1 pointer-events-none z-10 select-none animate-floral-bl">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
@@ -69,8 +69,8 @@ const SectionFloralCorners = ({
         className={`${size} scale-y-[-1] pointer-events-none select-none`} 
       />
     </div>
-    {/* Bottom-Right: flipped horizontally and vertically with gentle anchored swaying */}
-    <div className="absolute -bottom-1.5 -right-1.5 pointer-events-none z-10 select-none animate-floral-br">
+    {/* Bottom-Right: flipped horizontally and vertically with gentle anchored breathing pulse */}
+    <div className="absolute -bottom-1 -right-1 pointer-events-none z-10 select-none animate-floral-br">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
@@ -441,33 +441,33 @@ export default function RightSidebar({
           <div className="absolute inset-0 bg-gradient-to-t from-[#F4ECE3] via-[#F4ECE3]/35 to-transparent" />
         </div>
 
-        {/* Swaying Floral Corners on Cover (Top & Bottom) - Compact, Anchored, Feathered */}
+        {/* Swaying Floral Corners on Cover (Top & Bottom) - Anchored & Breathing */}
         <div className="absolute -top-1 -left-1 pointer-events-none z-10 select-none animate-floral-tl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-14 sm:w-16 pointer-events-none select-none" 
+            className="w-28 sm:w-32 md:w-36 pointer-events-none select-none" 
           />
         </div>
         <div className="absolute -top-1 -right-1 pointer-events-none z-10 select-none animate-floral-tr">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-14 sm:w-16 scale-x-[-1] pointer-events-none select-none" 
+            className="w-28 sm:w-32 md:w-36 scale-x-[-1] pointer-events-none select-none" 
           />
         </div>
         <div className="absolute -bottom-1 -left-1 pointer-events-none z-10 select-none animate-floral-bl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-16 sm:w-18 scale-y-[-1] pointer-events-none select-none" 
+            className="w-28 sm:w-32 md:w-36 scale-y-[-1] pointer-events-none select-none" 
           />
         </div>
         <div className="absolute -bottom-1 -right-1 pointer-events-none z-10 select-none animate-floral-br">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-16 sm:w-18 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
+            className="w-28 sm:w-32 md:w-36 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
           />
         </div>
 
@@ -515,7 +515,7 @@ export default function RightSidebar({
 
         {/* 1. HERO / SAVE THE DATE SECTION */}
         <section id="hero" className="relative min-h-[100dvh] flex flex-col items-center justify-between px-6 pt-12 pb-16 text-center overflow-hidden">
-          <SectionFloralCorners />
+          <SectionFloralCorners size="w-28 sm:w-32 md:w-36" />
 
           <div className="space-y-2 mt-4 sr-animate sr-fade-down sr-delay-100">
             <p className="text-xs font-semibold tracking-[0.3em] uppercase text-[#7A6A5E]">

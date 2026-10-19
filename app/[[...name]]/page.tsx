@@ -170,7 +170,7 @@ export default async function Home({ params, searchParams }: Props) {
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none" 
+            className="w-44 md:w-48 lg:w-52 xl:w-56 h-auto object-contain select-none" 
           />
         </div>
 
@@ -179,7 +179,7 @@ export default async function Home({ params, searchParams }: Props) {
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none scale-x-[-1]" 
+            className="w-44 md:w-48 lg:w-52 xl:w-56 h-auto object-contain select-none scale-x-[-1]" 
           />
         </div>
 
@@ -188,7 +188,7 @@ export default async function Home({ params, searchParams }: Props) {
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none scale-y-[-1]" 
+            className="w-44 md:w-48 lg:w-52 xl:w-56 h-auto object-contain select-none scale-y-[-1]" 
           />
         </div>
 
@@ -197,7 +197,7 @@ export default async function Home({ params, searchParams }: Props) {
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none scale-x-[-1] scale-y-[-1]" 
+            className="w-44 md:w-48 lg:w-52 xl:w-56 h-auto object-contain select-none scale-x-[-1] scale-y-[-1]" 
           />
         </div>
 

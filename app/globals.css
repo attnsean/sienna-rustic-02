@@ -245,63 +245,63 @@ body {
   font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
-/* Floral Sway / Graceful Corner Leaf Swing ("Goyang-Goyang" - anchored safely in corners) */
-@keyframes floralSwayTL {
-  0%, 100% {
-    transform: rotate(-2.5deg) scale(1);
+/* Floral Pulse / Breathing Motion ("Goyang & Bernafas" matching invisimple s01 pulsa) */
+@keyframes floralPulseTL {
+  0% {
+    transform: scale(0.94);
   }
-  50% {
-    transform: rotate(3.5deg) scale(1.02);
-  }
-}
-
-@keyframes floralSwayTR {
-  0%, 100% {
-    transform: rotate(2.5deg) scale(1);
-  }
-  50% {
-    transform: rotate(-3.5deg) scale(1.02);
+  100% {
+    transform: scale(1.06);
   }
 }
 
-@keyframes floralSwayBL {
-  0%, 100% {
-    transform: rotate(2.5deg) scale(1);
+@keyframes floralPulseTR {
+  0% {
+    transform: scale(0.93);
   }
-  50% {
-    transform: rotate(-3.5deg) scale(1.02);
+  100% {
+    transform: scale(1.07);
   }
 }
 
-@keyframes floralSwayBR {
-  0%, 100% {
-    transform: rotate(-2.5deg) scale(1);
+@keyframes floralPulseBL {
+  0% {
+    transform: scale(0.95);
   }
-  50% {
-    transform: rotate(3.5deg) scale(1.02);
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes floralPulseBR {
+  0% {
+    transform: scale(0.93);
+  }
+  100% {
+    transform: scale(1.07);
   }
 }
 
 .animate-floral-tl {
   transform-origin: top left !important;
-  animation: floralSwayTL 3.4s ease-in-out infinite !important;
+  animation: floralPulseTL 3.2s ease-in-out infinite alternate !important;
   will-change: transform;
 }
 
 .animate-floral-tr {
   transform-origin: top right !important;
-  animation: floralSwayTR 3.8s ease-in-out infinite 0.4s !important;
+  animation: floralPulseTR 3.6s ease-in-out infinite alternate 0.4s !important;
   will-change: transform;
 }
 
 .animate-floral-bl {
   transform-origin: bottom left !important;
-  animation: floralSwayBL 3.6s ease-in-out infinite 0.8s !important;
+  animation: floralPulseBL 3.4s ease-in-out infinite alternate 0.8s !important;
   will-change: transform;
 }
 
 .animate-floral-br {
   transform-origin: bottom right !important;
-  animation: floralSwayBR 4.0s ease-in-out infinite 1.2s !important;
+  animation: floralPulseBR 3.8s ease-in-out infinite alternate 1.2s !important;
   will-change: transform;
 }
