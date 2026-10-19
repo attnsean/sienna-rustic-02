@@ -164,40 +164,40 @@ export default async function Home({ params, searchParams }: Props) {
           style={{ backgroundImage: "url('/template/assets/eks-01-bg-01.jpg')" }}
         />
 
-        {/* 4 Precise Floral Leaf Corners (100% matched to the.invisimple.id/s01) */}
+        {/* 4 Corner Floral Leaves (Feathered edge, negative corner bleed, scaled down) */}
         {/* Top-Left: natural orientation */}
-        <div className="absolute top-0 left-0 pointer-events-none z-10 select-none animate-floral-tl">
+        <div className="absolute -top-2 -left-2 pointer-events-none z-10 select-none animate-floral-tl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none" 
+            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none" 
           />
         </div>
 
         {/* Top-Right: flipped horizontally */}
-        <div className="absolute top-0 right-0 pointer-events-none z-10 select-none animate-floral-tr">
+        <div className="absolute -top-2 -right-2 pointer-events-none z-10 select-none animate-floral-tr">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1]" 
+            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none scale-x-[-1]" 
           />
         </div>
 
         {/* Bottom-Left: flipped vertically */}
-        <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none animate-floral-bl">
+        <div className="absolute -bottom-2 -left-2 pointer-events-none z-10 select-none animate-floral-bl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-y-[-1]" 
+            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none scale-y-[-1]" 
           />
         </div>
 
         {/* Bottom-Right: flipped horizontally and vertically */}
-        <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none animate-floral-br">
+        <div className="absolute -bottom-2 -right-2 pointer-events-none z-10 select-none animate-floral-br">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-48 md:w-56 lg:w-64 xl:w-72 h-auto object-contain select-none scale-x-[-1] scale-y-[-1]" 
+            className="w-32 md:w-36 lg:w-40 xl:w-44 h-auto object-contain select-none scale-x-[-1] scale-y-[-1]" 
           />
         </div>
 

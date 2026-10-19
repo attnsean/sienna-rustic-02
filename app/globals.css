@@ -245,63 +245,63 @@ body {
   font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
-/* Floral Sway / Noticeable Graceful Leaf Swing ("Goyang-Goyang") */
+/* Floral Sway / Graceful Corner Leaf Swing ("Goyang-Goyang" - anchored safely in corners) */
 @keyframes floralSwayTL {
   0%, 100% {
-    transform: rotate(-6deg) scale(1);
+    transform: rotate(-2.5deg) scale(1);
   }
   50% {
-    transform: rotate(8deg) scale(1.02);
+    transform: rotate(3.5deg) scale(1.02);
   }
 }
 
 @keyframes floralSwayTR {
   0%, 100% {
-    transform: rotate(6deg) scale(1);
+    transform: rotate(2.5deg) scale(1);
   }
   50% {
-    transform: rotate(-8deg) scale(1.02);
+    transform: rotate(-3.5deg) scale(1.02);
   }
 }
 
 @keyframes floralSwayBL {
   0%, 100% {
-    transform: rotate(6deg) scale(1);
+    transform: rotate(2.5deg) scale(1);
   }
   50% {
-    transform: rotate(-8deg) scale(1.02);
+    transform: rotate(-3.5deg) scale(1.02);
   }
 }
 
 @keyframes floralSwayBR {
   0%, 100% {
-    transform: rotate(-6deg) scale(1);
+    transform: rotate(-2.5deg) scale(1);
   }
   50% {
-    transform: rotate(8deg) scale(1.02);
+    transform: rotate(3.5deg) scale(1.02);
   }
 }
 
 .animate-floral-tl {
   transform-origin: top left !important;
-  animation: floralSwayTL 3s ease-in-out infinite !important;
+  animation: floralSwayTL 3.4s ease-in-out infinite !important;
   will-change: transform;
 }
 
 .animate-floral-tr {
   transform-origin: top right !important;
-  animation: floralSwayTR 3.3s ease-in-out infinite 0.3s !important;
+  animation: floralSwayTR 3.8s ease-in-out infinite 0.4s !important;
   will-change: transform;
 }
 
 .animate-floral-bl {
   transform-origin: bottom left !important;
-  animation: floralSwayBL 3.1s ease-in-out infinite 0.6s !important;
+  animation: floralSwayBL 3.6s ease-in-out infinite 0.8s !important;
   will-change: transform;
 }
 
 .animate-floral-br {
   transform-origin: bottom right !important;
-  animation: floralSwayBR 3.4s ease-in-out infinite 0.9s !important;
+  animation: floralSwayBR 4.0s ease-in-out infinite 1.2s !important;
   will-change: transform;
 }

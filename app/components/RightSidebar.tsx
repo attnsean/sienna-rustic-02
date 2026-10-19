@@ -35,43 +35,47 @@ const InstagramIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) =>
   </svg>
 );
 
-// Reusable 4-Corner Floral Leaves matching the.invisimple.id/s01 exactly
-const SectionFloralCorners = () => (
+// Reusable 4-Corner Floral Leaves (Feathered edge, negative corner bleed, scaled down)
+const SectionFloralCorners = ({ 
+  size = "w-14 sm:w-16 md:w-18" 
+}: { 
+  size?: string;
+}) => (
   <>
-    {/* Top-Left: natural orientation with swaying animation */}
-    <div className="absolute top-0 left-0 pointer-events-none z-10 select-none animate-floral-tl">
+    {/* Top-Left: natural orientation with gentle anchored swaying */}
+    <div className="absolute -top-1.5 -left-1.5 pointer-events-none z-10 select-none animate-floral-tl">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
         aria-hidden="true"
-        className="w-20 sm:w-24 md:w-28 pointer-events-none select-none" 
+        className={`${size} pointer-events-none select-none`} 
       />
     </div>
-    {/* Top-Right: flipped horizontally with swaying animation */}
-    <div className="absolute top-0 right-0 pointer-events-none z-10 select-none animate-floral-tr">
+    {/* Top-Right: flipped horizontally with gentle anchored swaying */}
+    <div className="absolute -top-1.5 -right-1.5 pointer-events-none z-10 select-none animate-floral-tr">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
         aria-hidden="true"
-        className="w-20 sm:w-24 md:w-28 scale-x-[-1] pointer-events-none select-none" 
+        className={`${size} scale-x-[-1] pointer-events-none select-none`} 
       />
     </div>
-    {/* Bottom-Left: flipped vertically with swaying animation */}
-    <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none animate-floral-bl">
+    {/* Bottom-Left: flipped vertically with gentle anchored swaying */}
+    <div className="absolute -bottom-1.5 -left-1.5 pointer-events-none z-10 select-none animate-floral-bl">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
         aria-hidden="true"
-        className="w-20 sm:w-24 md:w-28 scale-y-[-1] pointer-events-none select-none" 
+        className={`${size} scale-y-[-1] pointer-events-none select-none`} 
       />
     </div>
-    {/* Bottom-Right: flipped horizontally and vertically with swaying animation */}
-    <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none animate-floral-br">
+    {/* Bottom-Right: flipped horizontally and vertically with gentle anchored swaying */}
+    <div className="absolute -bottom-1.5 -right-1.5 pointer-events-none z-10 select-none animate-floral-br">
       <img 
         src="/template/assets/asset-01-01.png" 
         alt="" 
         aria-hidden="true"
-        className="w-20 sm:w-24 md:w-28 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
+        className={`${size} scale-x-[-1] scale-y-[-1] pointer-events-none select-none`} 
       />
     </div>
   </>
@@ -283,6 +287,21 @@ export default function RightSidebar({
     };
   }, [isOpened]);
 
+  // Lock scroll completely on body & window while invitation is not yet opened
+  useEffect(() => {
+    if (!isOpened) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [isOpened]);
+
   // Open invitation handler with smooth slide-up matching s01 closeCover()
   const handleOpenInvitation = () => {
     setIsOpened(true);
@@ -384,7 +403,9 @@ export default function RightSidebar({
   return (
     <div 
       ref={containerRef}
-      className="relative w-full md:w-[40%] lg:w-[35%] xl:w-[32%] min-h-[100dvh] md:h-[100dvh] md:overflow-y-auto no-scrollbar bg-[#F4ECE3] text-[#3C2A21] select-none"
+      className={`relative w-full md:w-[40%] lg:w-[35%] xl:w-[32%] h-[100dvh] ${
+        isOpened ? "overflow-y-auto" : "overflow-hidden"
+      } no-scrollbar bg-[#F4ECE3] text-[#3C2A21] select-none`}
       style={{
         backgroundImage: "url('/template/assets/eks-01-bg-01.jpg')",
         backgroundSize: "cover",
@@ -420,33 +441,33 @@ export default function RightSidebar({
           <div className="absolute inset-0 bg-gradient-to-t from-[#F4ECE3] via-[#F4ECE3]/35 to-transparent" />
         </div>
 
-        {/* Swaying Floral Corners on Cover (Top & Bottom) */}
-        <div className="absolute top-0 left-0 pointer-events-none z-10 select-none animate-floral-tl">
+        {/* Swaying Floral Corners on Cover (Top & Bottom) - Compact, Anchored, Feathered */}
+        <div className="absolute -top-1 -left-1 pointer-events-none z-10 select-none animate-floral-tl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-24 sm:w-28 pointer-events-none select-none" 
+            className="w-14 sm:w-16 pointer-events-none select-none" 
           />
         </div>
-        <div className="absolute top-0 right-0 pointer-events-none z-10 select-none animate-floral-tr">
+        <div className="absolute -top-1 -right-1 pointer-events-none z-10 select-none animate-floral-tr">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-24 sm:w-28 scale-x-[-1] pointer-events-none select-none" 
+            className="w-14 sm:w-16 scale-x-[-1] pointer-events-none select-none" 
           />
         </div>
-        <div className="absolute bottom-0 left-0 pointer-events-none z-10 select-none animate-floral-bl">
+        <div className="absolute -bottom-1 -left-1 pointer-events-none z-10 select-none animate-floral-bl">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-28 sm:w-32 scale-y-[-1] pointer-events-none select-none" 
+            className="w-16 sm:w-18 scale-y-[-1] pointer-events-none select-none" 
           />
         </div>
-        <div className="absolute bottom-0 right-0 pointer-events-none z-10 select-none animate-floral-br">
+        <div className="absolute -bottom-1 -right-1 pointer-events-none z-10 select-none animate-floral-br">
           <img 
             src="/template/assets/asset-01-01.png" 
             alt="Floral" 
-            className="w-28 sm:w-32 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
+            className="w-16 sm:w-18 scale-x-[-1] scale-y-[-1] pointer-events-none select-none" 
           />
         </div>
 
@@ -488,7 +509,9 @@ export default function RightSidebar({
       {/* ========================================================
           MAIN INVITATION CONTENT (Revealed underneath smoothly)
          ======================================================== */}
-      <div className="relative z-10 space-y-12 pb-32 pt-2">
+      <div className={`relative z-10 space-y-12 pb-32 pt-2 transition-opacity duration-1000 ${
+        isOpened ? "opacity-100" : "hidden pointer-events-none"
+      }`}>
 
         {/* 1. HERO / SAVE THE DATE SECTION */}
         <section id="hero" className="relative min-h-[100dvh] flex flex-col items-center justify-between px-6 pt-12 pb-16 text-center overflow-hidden">
