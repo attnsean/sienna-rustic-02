@@ -229,12 +229,18 @@ export default function RightSidebar({
   const groomNickname = project?.groom_nickname || "Putra";
   const brideFull = project?.bride_name || "Putri Cantika Sari";
   const groomFull = project?.groom_name || "Putra Andika Pratama";
-  const brideParents = project?.bride_father && project?.bride_mother 
-    ? `Putri Pertama Dari Bapak ${project.bride_father} Dan Ibu ${project.bride_mother}`
-    : "Putri Pertama Dari Bapak Herman Dan Ibu Afriva";
-  const groomParents = project?.groom_father && project?.groom_mother
-    ? `Putra Pertama Dari Bapak ${project.groom_father} Dan Ibu ${project.groom_mother}`
-    : "Putra Pertama Dari Bapak Herman Dan Ibu Afriva";
+  const isDemo = !project || (!project.id && !project.project_name);
+  const brideFather = isDemo ? "Herman" : (project?.bride_father?.trim() || "");
+  const brideMother = isDemo ? "Afriva" : (project?.bride_mother?.trim() || "");
+  const brideParents = Boolean(brideFather || brideMother)
+    ? `Putri dari ${brideFather ? `Bapak ${brideFather}` : ""}${Boolean(brideFather && brideMother) ? " Dan " : ""}${brideMother ? `Ibu ${brideMother}` : ""}`
+    : "";
+
+  const groomFather = isDemo ? "Herman" : (project?.groom_father?.trim() || "");
+  const groomMother = isDemo ? "Afriva" : (project?.groom_mother?.trim() || "");
+  const groomParents = Boolean(groomFather || groomMother)
+    ? `Putra dari ${groomFather ? `Bapak ${groomFather}` : ""}${Boolean(groomFather && groomMother) ? " Dan " : ""}${groomMother ? `Ibu ${groomMother}` : ""}`
+    : "";
   const brideIg = project?.bride_instagram || "putricantika";
   const groomIg = project?.groom_instagram || "putrandika";
 
@@ -788,15 +794,17 @@ export default function RightSidebar({
             <ScrollAnimatedTitle 
               lines={[{ text: brideFull, className: "font-sr-script text-3xl sm:text-4xl text-[#5C4E43] leading-none pt-1" }]} 
             />
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed"
-            >
-              {brideParents}
-            </motion.p>
+            {brideParents && (
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed"
+              >
+                {brideParents}
+              </motion.p>
+            )}
             {brideIg && (
               <motion.a 
                 href={`https://instagram.com/${brideIg}`} 
@@ -845,15 +853,17 @@ export default function RightSidebar({
             <ScrollAnimatedTitle 
               lines={[{ text: groomFull, className: "font-sr-script text-3xl sm:text-4xl text-[#5C4E43] leading-none pt-1" }]} 
             />
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed"
-            >
-              {groomParents}
-            </motion.p>
+            {groomParents && (
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="text-xs text-[#7A6A5E] max-w-xs leading-relaxed"
+              >
+                {groomParents}
+              </motion.p>
+            )}
             {groomIg && (
               <motion.a 
                 href={`https://instagram.com/${groomIg}`} 
