@@ -1252,6 +1252,11 @@ export default function RightSidebar({
         </section>
 
         {/* 8. WEDDING GIFT / AMPLOP DIGITAL SECTION */}
+        {Boolean(
+          ((project as any)?.has_cashless || (project as any)?.subscriptions?.packages?.has_amplop_digital) &&
+          ((project?.payment_accounts && Array.isArray(project.payment_accounts) && project.payment_accounts.some((a: any) => a && (a.account_number || a.number || a.rekening) && String(a.account_number || a.number || a.rekening).trim() !== "" && String(a.account_number || a.number || a.rekening).trim() !== "123123123")) ||
+           Boolean((project as any)?.wishlist_note?.trim()))
+        ) && (
         <section id="gift" className="px-4">
           <motion.div 
             initial={{ opacity: 0, y: 35, scale: 0.95 }}
@@ -1346,83 +1351,10 @@ export default function RightSidebar({
                   ) : (
                     <>
                       {/* BCA Card Default */}
-                      <motion.div 
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileHover={{ y: -2 }}
-                        className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3"
-                      >
-                        <div className="flex items-center justify-between">
-                          <img src="/template/assets/bca-150x50.png" alt="BCA" className="h-6 w-auto object-contain" />
-                          <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
-                        </div>
-                        <div className="space-y-0.5">
-                          <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
-                          <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">123123123</p>
-                        </div>
-                        <p className="text-xs font-medium text-[#5C4E43]">a.n. Putri Cantika Sara</p>
-                        <motion.button 
-                          type="button"
-                          onClick={() => handleCopy("123123123", "bca")}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.97 }}
-                          className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                        >
-                          {copiedKey === "bca" ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-300" />
-                              <span>Berhasil Disalin!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5" />
-                              <span>Salin No. Rekening</span>
-                            </>
-                          )}
-                        </motion.button>
-                      </motion.div>
-
-                      {/* BRI Card Default */}
-                      <motion.div 
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        whileHover={{ y: -2 }}
-                        className="bg-white text-[#3C2A21] p-5 rounded-2xl shadow-lg border border-slate-100 relative space-y-3"
-                      >
-                        <div className="flex items-center justify-between">
-                          <img src="/template/assets/bri-150x50.png" alt="BRI" className="h-6 w-auto object-contain" />
-                          <img src="/template/assets/chip-ilustration.png" alt="Chip" className="h-6 w-auto object-contain opacity-80" />
-                        </div>
-                        <div className="space-y-0.5">
-                          <span className="text-[10px] text-[#7A6A5E] uppercase font-bold tracking-wider">No. Rekening</span>
-                          <p className="font-mono text-base font-bold text-[#3C2A21] tracking-wider">321321321</p>
-                        </div>
-                        <p className="text-xs font-medium text-[#5C4E43]">a.n. Putra Andika Pratama</p>
-                        <motion.button 
-                          type="button"
-                          onClick={() => handleCopy("321321321", "bri")}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.97 }}
-                          className="w-full py-2 bg-[#5C4E43] hover:bg-[#4a3e35] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                        >
-                          {copiedKey === "bri" ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-300" />
-                              <span>Berhasil Disalin!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5" />
-                              <span>Salin No. Rekening</span>
-                            </>
-                          )}
-                        </motion.button>
-                      </motion.div>
-                    </>
-                  )}
+                      : null)}
 
                   {/* Physical Gift Address */}
+                  {Boolean((project as any)?.wishlist_note?.trim()) && (
                   <motion.div 
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1456,6 +1388,7 @@ export default function RightSidebar({
                       )}
                     </motion.button>
                   </motion.div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
